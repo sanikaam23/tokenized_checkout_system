@@ -7,6 +7,7 @@ import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { BrowserRouter } from 'react-router-dom';
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
