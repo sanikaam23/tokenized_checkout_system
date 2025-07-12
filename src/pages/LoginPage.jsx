@@ -1,47 +1,76 @@
-import React, { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import GoogleLoginButton from '../components/GoogleLoginButton';
+import React, { useState, useContext } from 'react';
+import { FaUser, FaLock } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
+import { AuthContext } from '../context/AuthContext';
 
 const LoginPage = () => {
-  const { login } = useAuth(); // access login function from context
+  const { login, loginWithGoogle } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login(email, password); // calls login function defined in AuthContext.jsx
+    login(email, password);
+  };
+
+  const handleGoogleLogin = async () => {
+    await loginWithGoogle();
   };
 
   return (
-    <div className="max-w-md mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
-      <p className="mb-4">Access your account to continue shopping.</p>
+    <div className="w-full min-h-screen bg-[#1a2a47] flex items-center justify-center px-4">
+      <div className="relative bg-white rounded-xl shadow-lg p-8 pt-14 w-full max-w-sm">
+        {/* User Icon */}
+        <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-[#1a2a47] p-4 rounded-full">
+          <FaUser className="text-white text-2xl" />
+        </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-2 border rounded"
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-2 border rounded"
-          required
-        />
-        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-          Login
-        </button>
-      </form>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="flex items-center bg-blue-200 rounded px-3 py-2">
+            <FaUser className="text-gray-700 mr-3" />
+            <input
+              type="email"
+              placeholder="Email id"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="bg-transparent flex-grow focus:outline-none text-gray-800"
+            />
+          </div>
 
-      <div className="my-6 text-center">
-        <p className="mb-2">Or login with</p>
-        <GoogleLoginButton /> {/* renders your Google OAuth login button */}
+          <div className="flex items-center bg-blue-200 rounded px-3 py-2">
+            <FaLock className="text-gray-700 mr-3" />
+            <input
+              type="password"
+              placeholder="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="bg-transparent flex-grow focus:outline-none text-gray-800"
+            />
+          </div>
+
+          <div className="text-right">
+            <a href="#" className="text-sm text-gray-700 hover:underline">forget password?</a>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-yellow-400 text-gray-900 py-2 rounded font-semibold hover:bg-yellow-500"
+          >
+            Login/SignUp
+          </button>
+        </form>
+
+        <div className="mt-6 flex justify-center">
+          <button
+            onClick={handleGoogleLogin}
+            className="flex items-center space-x-3 border border-gray-300 rounded px-4 py-2 hover:bg-gray-100"
+          >
+            <FcGoogle className="text-2xl" />
+            <span className="text-gray-700">Sign in with Google</span>
+          </button>
+        </div>
       </div>
     </div>
   );
