@@ -10,48 +10,33 @@ const Header = () => {
     console.log('Searching for:', searchQuery);
   };
 
+  return (
+    <header className="bg-gray-900 text-white px-6 md:px-10 py-4 shadow-md sticky top-0 z-50">
+      <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        
+        {/* Left: Logo */}
+        <Link to="/" className="text-2xl font-bold flex items-center space-x-2">
+          <span role="img" aria-label="cart">🛒</span>
+          <span className="text-yellow-400">Deal</span>Nova
+        </Link>
+
+       
   
 
-  return (
-    <header className="bg-gray-800 text-white px-8 py-4">
-      <div className="flex justify-between items-center">
-        {/* Left: Site name */}
-        <Link to="/" className="text-2xl font-bold">🛒 DealNova</Link>
-
-        {/* Center: Search bar */}
-        <form
-          onSubmit={handleSearch}
-          className="flex items-center bg-white rounded-full px-3 py-1 w-1/3"
-        >
-          <FaSearch className="text-gray-500 mr-2" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search here"
-            className="flex-grow text-gray-800 focus:outline-none bg-transparent"
-          />
-          {searchQuery && (
-            <FaTimes
-              className="text-gray-500 ml-2 cursor-pointer"
-              onClick={() => setSearchQuery('')}
-            />
-          )}
-        </form>
-
         {/* Right: Nav links */}
-        <div className="flex items-center space-x-6">
-          <Link to="/" className="hover:underline">HOME</Link>
-          <Link to="/about" className="hover:underline">ABOUT</Link>
-          <Link to="/contact" className="hover:underline">CONTACT</Link>
+        <div className="flex items-center space-x-4 md:space-x-6">
+          <Link to="/" className="hover:text-yellow-400 font-medium">Home</Link>
+          <Link to="/about" className="hover:text-yellow-400 font-medium">About</Link>
+          <Link to="/contact" className="hover:text-yellow-400 font-medium">Contact</Link>
 
-          {/* Profile icon - navigates to /profile */}
           <Link to="/profile" className="text-xl hover:text-yellow-400">
             <FaUser />
           </Link>
 
           <Link to="/login">
-            <button className="bg-yellow-400 text-gray-900 px-4 py-2 rounded">LOGIN</button>
+            <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-4 py-1.5 rounded-full font-semibold shadow transition duration-300">
+              Login
+            </button>
           </Link>
         </div>
       </div>
