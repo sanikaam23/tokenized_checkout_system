@@ -9,6 +9,7 @@ import CheckoutPage from '../pages/CheckoutPage';
 import LoginPage from '../pages/LoginPage';
 import SignupPage from '../pages/SignupPage';
 import OrderPages from '../pages/OrderPages';
+import ProductDetailPage from '../pages/ProductDetailPage'; // ✅ imported single product page
 import ProfilePage from '../pages/ProfilePage';
 
 import ProtectedRoute from '../components/ProtectedRoute';
@@ -16,30 +17,52 @@ import ProtectedRoute from '../components/ProtectedRoute';
 const AppRoutes = () => {
   return (
     <Routes>
+      {/* Home Page */}
       <Route path="/" element={<HomePage />} />
+
+      {/* Cart Page */}
       <Route path="/cart" element={<CartPage />} />
-      
-      <Route path="/checkout" element={
-        <ProtectedRoute>
-          <CheckoutPage />
-        </ProtectedRoute>
-      } />
-      
+
+      {/* Checkout Page - Protected */}
+      <Route
+        path="/checkout"
+        element={
+          <ProtectedRoute>
+            <CheckoutPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Login & Signup Pages */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
-      
-      <Route path="/orders" element={
-        <ProtectedRoute>
-          <OrderPages />
-        </ProtectedRoute>
-      } />
-      
-      <Route path="/profile" element={
-        <ProtectedRoute>
-          <ProfilePage />
-        </ProtectedRoute>
-      } />
 
+      {/* Orders Page */}
+      <Route
+        path="/orders"
+        element={
+          <OrderPages /> // ✅ made public for easy Shop Now navigation
+          // If you want it protected, replace with:
+          // <ProtectedRoute>
+          //   <OrderPages />
+          // </ProtectedRoute>
+        }
+      />
+
+      {/* Single Product Detail Page */}
+      <Route path="/product/:id" element={<ProductDetailPage />} /> {/* ✅ added */}
+
+      {/* Profile Page - Protected */}
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* 404 Fallback */}
       <Route path="*" element={<h1>404 - Page Not Found</h1>} />
     </Routes>
   );
