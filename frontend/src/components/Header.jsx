@@ -1,34 +1,48 @@
-import React, { useContext } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaUserCircle } from 'react-icons/fa';
-import { AuthContext } from '../context/AuthContext';
+import { FaSearch, FaTimes, FaUser } from 'react-icons/fa';
 
 const Header = () => {
-  const { user } = useContext(AuthContext);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    console.log('Searching for:', searchQuery);
+  };
 
   return (
-    <header className="bg-gray-900 text-white py-4 shadow-md">
-      <div className="container mx-auto flex justify-between items-center px-4">
-        <Link
-          to="/"
-          className="text-2xl font-bold text-yellow-400 hover:text-yellow-500 transition-colors"
-        >
-          🛒 DealNova
+    <header className="bg-gray-900 text-white px-6 md:px-10 py-4 shadow-md sticky top-0 z-50">
+      <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        
+        {/* Left: Logo */}
+        <Link to="/" className="text-2xl font-bold flex items-center space-x-2">
+          <span role="img" aria-label="cart">🛒</span>
+          <span className="text-yellow-400">Deal</span>Nova
         </Link>
 
-        <nav className="flex items-center space-x-6">
-          <Link to="/" className="hover:text-yellow-400">Home</Link>
-          <Link to="/cart" className="hover:text-yellow-400">Cart</Link>
-          <Link to="/login" className="hover:text-yellow-400">Login</Link>
+       
+  
 
-          <Link to="/profile" className="hover:text-yellow-400 flex items-center space-x-1">
-            <FaUserCircle size={24} />
-            {user && <span className="hidden md:inline">{user.name}</span>}
+        {/* Right: Nav links */}
+        <div className="flex items-center space-x-4 md:space-x-6">
+          <Link to="/" className="hover:text-yellow-400 font-medium">Home</Link>
+          <Link to="/about" className="hover:text-yellow-400 font-medium">About</Link>
+          <Link to="/contact" className="hover:text-yellow-400 font-medium">Contact</Link>
+
+          <Link to="/profile" className="text-xl hover:text-yellow-400">
+            <FaUser />
           </Link>
-        </nav>
+
+          <Link to="/login">
+            <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-4 py-1.5 rounded-full font-semibold shadow transition duration-300">
+              Login
+            </button>
+          </Link>
+        </div>
       </div>
     </header>
   );
 };
 
 export default Header;
+

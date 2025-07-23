@@ -1,57 +1,44 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    console.log('Searching for:', searchQuery);
-    // 🔗 Integrate your search API call here later
+  const handleShopNow = () => {
+    navigate('/orders');
   };
 
   return (
-    <div className="w-full px-4 py-8 bg-gray-900 text-white min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-gray-800 rounded-lg p-8 mb-8 shadow flex flex-col md:flex-row items-center justify-between">
-        <div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">Welcome to DealNova</h1>
-          <p className="text-lg mb-4">
-            Explore trending products with secure one-click checkout.
-          </p>
-          <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 py-3 rounded">
-            Shop Now
-          </button>
-        </div>
-        <img
-          src="https://source.unsplash.com/400x300?shopping"
-          alt="Shopping Promo"
-          className="mt-6 md:mt-0 md:ml-8 rounded-lg shadow-lg w-full md:w-1/3 object-cover"
-        />
-      </section>
+    <div className="w-full min-h-screen bg-gradient-to-br from-[#1a2a47] to-[#0f172a] text-white flex items-center justify-center px-6 py-12">
+      <div className="flex flex-col md:flex-row items-center justify-between max-w-7xl w-full">
+        
+        {/* Text Section */}
+        <div className="md:w-1/2 mb-12 md:mb-0">
+          <p className="uppercase tracking-[0.3em] text-yellow-300 text-xs mb-4 font-semibold">Urban Edge</p>
+          <h1 className="text-6xl md:text-8xl font-extrabold font-cursive mb-4 drop-shadow-lg">
+            Deal<span className="text-yellow-400">Nova</span>
+          </h1>
+          <p className="text-xl md:text-2xl font-light italic mb-2">Explore and Discover</p>
+          <p className="text-xl md:text-2xl font-light italic mb-8">Your own style</p>
 
-      {/* 🔍 Search Bar */}
-      <form onSubmit={handleSearch} className="mb-8 max-w-2xl mx-auto">
-        <div className="flex">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search for products..."
-            className="w-full p-3 rounded-l bg-gray-800 text-white placeholder-gray-400 focus:outline-none"
-          />
           <button
-            type="submit"
-            className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 px-4 rounded-r font-semibold"
+            onClick={handleShopNow}
+            className="relative group bg-yellow-400 text-gray-900 px-6 py-3 rounded-full font-semibold hover:bg-yellow-500 transition duration-300 overflow-hidden shadow-lg"
           >
-            Search
+            <span className="relative z-10">Shop Now</span>
+            <div className="text-xs text-gray-800 mt-1">just one click checkout away</div>
+            <span className="absolute left-0 bottom-0 w-0 h-1 bg-yellow-600 transition-all group-hover:w-full"></span>
           </button>
         </div>
-      </form>
 
-      {/* Promotional Banner */}
-      <div className="bg-yellow-500 text-gray-900 p-6 rounded-lg shadow mb-8">
-        <h2 className="text-2xl font-bold">Limited Time Offer!</h2>
-        <p className="mt-2">Get up to 50% off on select items. Shop now before the sale ends.</p>
+        {/* Image Section */}
+        <div className="md:w-1/2 flex justify-center md:justify-end">
+          <img
+            src="/images/hero-fashion.jpeg"
+            alt="Fashion Model"
+            className="rounded-3xl object-cover w-72 md:w-[500px] shadow-2xl border-2 border-yellow-400"
+          />
+        </div>
       </div>
     </div>
   );
