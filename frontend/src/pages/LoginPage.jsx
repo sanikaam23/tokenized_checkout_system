@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { FaUser, FaLock } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const { login, signup, loginWithGoogle } = useContext(AuthContext);
@@ -10,11 +11,13 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  const navigate = useNavigate(); // For redirecting user after login/signup
+
   const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
   const validatePassword = (password) =>
     password.length >= 6 && /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateEmail(email)) {
@@ -27,15 +30,31 @@ const LoginPage = () => {
     }
 
     setError('');
-    if (isLogin) {
-      login(email, password);
-    } else {
-      signup(email, password);
+    try {
+      if (isLogin) {
+        await login(email, password);
+      } else {
+        await signup(email, password);
+      }
+
+      // ✅ Redirect user after successful login/signup
+      navigate('/orders');
+    } catch (err) {
+      console.error(err);
+      setError('Authentication failed. Please try again.');
     }
   };
 
   const handleGoogleLogin = async () => {
-    await loginWithGoogle();
+    try {
+      await loginWithGoogle();
+
+      // ✅ Redirect user after successful Google login/signup
+      navigate('/orders');
+    } catch (err) {
+      console.error(err);
+      setError('Google login failed.');
+    }
   };
 
   return (
@@ -121,4 +140,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-

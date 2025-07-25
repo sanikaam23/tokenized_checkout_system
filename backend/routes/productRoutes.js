@@ -2,12 +2,19 @@
 
 const express = require('express');
 const router = express.Router();
-const { getProducts } = require('../controllers/productController');
+const {
+  getProducts,
+  getProductById,
+  createProduct
+} = require('../controllers/productController');
 
-// ⚠️ Removed createProduct and authMiddleware for now
-// because your current integration only fetches products from DummyJSON
-
-// GET /api/products - Fetch products from DummyJSON via backend
+// ✅ GET /api/products - Fetch all products
 router.get('/', getProducts);
+
+// ✅ GET /api/products/:id - Fetch single product by ID
+router.get('/:id', getProductById);
+
+// ✅ POST /api/products - Create a new product (admin usage)
+router.post('/', createProduct);
 
 module.exports = router;

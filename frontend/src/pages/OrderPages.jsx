@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaSearch, FaTimes } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // ✅ import axios
+import axios from 'axios';
 
 const OrderPages = () => {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const OrderPages = () => {
       try {
         const results = await Promise.all(
           clothingCategories.map(category =>
-            fetch(`https://dummyjson.com/products/category/${category}/${category}`)
+            fetch(`https://dummyjson.com/products/category/${category}`)
               .then(res => res.json())
               .then(data => data.products.map(product => ({
                 id: product.id,
@@ -47,23 +47,8 @@ const OrderPages = () => {
     fetchData();
   }, []);
 
-  const handleProductClick = async (product) => {
-    const userId = 1; // ✅ Replace with logged-in user ID in production
-
-    try {
-      const response = await axios.post('http://localhost:5000/api/orders', {
-        userId,
-        productId: product.id,
-        productName: product.title,
-        productPrice: product.price
-      });
-      console.log('✅ Order created:', response.data);
-      alert('Order placed successfully!');
-      // navigate('/ordersummary'); // Optional redirect
-    } catch (err) {
-      console.error('❌ Error creating order:', err);
-      alert('Failed to place order');
-    }
+  const handleProductClick = (product) => {
+    navigate(`/product/${product.id}`);
   };
 
   const filteredProducts = products
@@ -140,7 +125,7 @@ const OrderPages = () => {
         {currentProducts.map(product => (
           <div
             key={product.id}
-            onClick={() => handleProductClick(product)} // ✅ create order on click
+            onClick={() => handleProductClick(product)}
             className="bg-white text-gray-800 rounded-xl shadow-lg p-4 flex flex-col items-center cursor-pointer transform hover:-translate-y-1 hover:scale-105 transition duration-300"
           >
             <img

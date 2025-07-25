@@ -8,35 +8,37 @@ const Product = require('./product');
 const Order = require('./order');
 const Payment = require('./payment');
 
-// ✅ Define model associations clearly
+/**
+ * ✅ Define model associations clearly
+ */
 
 // User ➔ Orders (1:M)
 User.hasMany(Order, {
   foreignKey: 'userId',
-  onDelete: 'CASCADE',
+  onDelete: 'CASCADE', // delete orders if user deleted
 });
 Order.belongsTo(User, { foreignKey: 'userId' });
 
 // User ➔ Payments (1:M)
 User.hasMany(Payment, {
   foreignKey: 'userId',
-  onDelete: 'CASCADE',
+  onDelete: 'CASCADE', // delete payments if user deleted
 });
 Payment.belongsTo(User, { foreignKey: 'userId' });
 
 // Payment ➔ Orders (1:M)
-// This assumes multiple orders can be under a single payment transaction (e.g. combined checkout)
+// Multiple orders under a single payment transaction
 Payment.hasMany(Order, {
   foreignKey: 'paymentId',
-  onDelete: 'SET NULL',
+  onDelete: 'SET NULL', // if payment deleted, keep orders but set paymentId null
 });
 Order.belongsTo(Payment, { foreignKey: 'paymentId' });
 
 // Product ➔ Orders (1:M)
-// Linking each order to the product if you later store products in DB
+// Linking each order to its product
 Product.hasMany(Order, {
   foreignKey: 'productId',
-  onDelete: 'SET NULL',
+  onDelete: 'SET NULL', // if product deleted, keep orders but set productId null
 });
 Order.belongsTo(Product, { foreignKey: 'productId' });
 
@@ -53,4 +55,11 @@ const syncDB = async () => {
   }
 };
 
-module.exports = { sequelize, syncDB, User, Product, Order, Payment };
+module.exports = {
+  sequelize,
+  syncDB,
+  User,
+  Product,
+  Order,
+  Payment,
+};

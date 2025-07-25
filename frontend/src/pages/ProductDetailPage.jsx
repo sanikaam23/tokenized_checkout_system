@@ -12,22 +12,32 @@ const ProductDetailPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`https://dummyjson.com/products/${id}`)
-      .then(res => res.json())
-      .then(data => setProduct(data))
-      .catch(err => console.error('Error fetching product:', err));
+    const fetchProduct = async () => {
+      try {
+        const res = await fetch(`https://dummyjson.com/products/${id}`);
+        const data = await res.json();
+        setProduct(data);
+      } catch (err) {
+        console.error('Error fetching product:', err);
+      }
+    };
+    fetchProduct();
   }, [id]);
 
   useEffect(() => {
-    if (product && product.category) {
-      fetch(`https://dummyjson.com/products/category/${product.category}`)
-        .then(res => res.json())
-        .then(data => {
+    const fetchRecommendations = async () => {
+      if (product && product.category) {
+        try {
+          const res = await fetch(`https://dummyjson.com/products/category/${product.category}`);
+          const data = await res.json();
           const otherProducts = data.products.filter(p => p.id !== parseInt(id));
           setRecommendations(otherProducts.slice(0, 4));
-        })
-        .catch(err => console.error('Error fetching recommendations:', err));
-    }
+        } catch (err) {
+          console.error('Error fetching recommendations:', err);
+        }
+      }
+    };
+    fetchRecommendations();
   }, [product, id]);
 
   const handleAddToCart = () => {
@@ -37,7 +47,6 @@ const ProductDetailPage = () => {
 
   if (!product) return <div className="text-center text-white mt-10">Loading...</div>;
 
-  // 🔷 Prepare images array for gallery
   const galleryImages = product.images
     ? product.images.map(img => ({
         original: img,
@@ -66,16 +75,13 @@ const ProductDetailPage = () => {
         <div className="flex flex-col justify-center">
           <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
 
-          {/* Ratings */}
           <div className="flex items-center mb-2">
             <span className="text-yellow-400 mr-2">★ {product.rating}</span>
             <span className="text-sm text-gray-600">({product.stock} available)</span>
           </div>
 
-          {/* Price */}
           <p className="text-xl text-green-600 font-bold mb-2">${product.price}</p>
 
-          {/* Sizes */}
           <div className="mb-4">
             <label className="block mb-1 font-semibold">Select Size:</label>
             <div className="flex space-x-2">
@@ -90,7 +96,6 @@ const ProductDetailPage = () => {
             </div>
           </div>
 
-          {/* Colors */}
           <div className="mb-4">
             <label className="block mb-1 font-semibold">Select Color:</label>
             <div className="flex space-x-2">
@@ -105,13 +110,11 @@ const ProductDetailPage = () => {
             </div>
           </div>
 
-          {/* Offers */}
           <div className="bg-yellow-100 text-yellow-800 p-3 rounded mb-4">
             <p className="font-semibold">Special Offer:</p>
             <p>Get 10% off on orders above $100. Use code: <span className="font-bold">FASHION10</span></p>
           </div>
 
-          {/* Description */}
           <p className="mb-4">{product.description}</p>
 
           <button

@@ -9,7 +9,7 @@ import CheckoutPage from '../pages/CheckoutPage';
 import LoginPage from '../pages/LoginPage';
 import SignupPage from '../pages/SignupPage';
 import OrderPages from '../pages/OrderPages';
-import ProductDetailPage from '../pages/ProductDetailPage'; // ✅ imported single product page
+import ProductDetailPage from '../pages/ProductDetailPage';
 import ProfilePage from '../pages/ProfilePage';
 
 import ProtectedRoute from '../components/ProtectedRoute';
@@ -37,20 +37,18 @@ const AppRoutes = () => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
 
-      {/* Orders Page */}
+      {/* Orders Page - Protected */}
       <Route
         path="/orders"
         element={
-          <OrderPages /> // ✅ made public for easy Shop Now navigation
-          // If you want it protected, replace with:
-          // <ProtectedRoute>
-          //   <OrderPages />
-          // </ProtectedRoute>
+          <ProtectedRoute>
+            <OrderPages />
+          </ProtectedRoute>
         }
       />
 
       {/* Single Product Detail Page */}
-      <Route path="/product/:id" element={<ProductDetailPage />} /> {/* ✅ added */}
+      <Route path="/product/:id" element={<ProductDetailPage />} />
 
       {/* Profile Page - Protected */}
       <Route

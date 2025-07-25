@@ -1,4 +1,5 @@
 // backend/server.js
+
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -6,28 +7,32 @@ dotenv.config();
 
 const app = express();
 
-// ✅ IMPORTANT: Middleware must be in this order
-app.use(cors());
-app.use(express.json()); // This MUST come before routes
+// ✅ CORS setup (allows frontend to communicate with backend securely)
+app.use(cors({
+  origin: 'http://localhost:3000', // frontend URL
+  credentials: true, // enable cookies/auth headers if needed
+}));
 
-// 🔍 Debug middleware to check if body is parsed
+// ✅ Parse incoming JSON data before routes
+app.use(express.json());
+
+// 🔍 Debug middleware to log requests and parsed body for debugging
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  console.log('req.body:', req.body);
-  console.log('Content-Type:', req.headers['content-type']);
+  console.log(`➡️ ${req.method} ${req.url}`);
+  console.log('📦 req.body:', req.body);
   next();
 });
 
 // ✅ Import DB sync and models
 const { syncDB } = require('./models');
 
-// ✅ Import routes AFTER middleware setup
+// ✅ Import routes
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 
-// ✅ Use routes
+// ✅ Use routes with API prefixes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/payments', paymentRoutes);
@@ -35,9 +40,14 @@ app.use('/api/orders', orderRoutes);
 
 const PORT = process.env.PORT || 5000;
 
-// ✅ Start server
+// ✅ Start server and sync DB on startup
 app.listen(PORT, async () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  await syncDB();
-  console.log('🎉 Server is ready!');
+  try {
+    await syncDB(); // ensures DB tables are up to date with model definitions
+    console.log('✅ Database synchronized successfully');
+  } catch (error) {
+    console.error('❌ Error syncing database:', error);
+  }
+  console.log('🎉 Server is ready and listening!');
 });

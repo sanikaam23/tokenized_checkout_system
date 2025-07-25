@@ -2,20 +2,21 @@ import axios from 'axios';
 
 // 🔗 Base Axios instance
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api', // change to your backend URL
-  withCredentials: true, // if using cookies for auth
+  baseURL: 'http://localhost:5000/api', // ✅ Your backend URL
+  withCredentials: true, // ✅ Allow cookies & credentials if needed
 });
 
 // 🔑 Add JWT token to requests (if using auth tokens)
-API.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-}, (error) => {
-  return Promise.reject(error);
-});
+API.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 // 🛒 Products API
 export const fetchProducts = () => API.get('/products');
@@ -23,9 +24,10 @@ export const fetchProducts = () => API.get('/products');
 // 🔐 Auth APIs
 export const loginUser = (credentials) => API.post('/auth/login', credentials);
 export const signupUser = (data) => API.post('/auth/signup', data);
+export const googleLoginUser = (googleData) => API.post('/auth/google', googleData);
 export const getProfile = () => API.get('/auth/profile');
 
-// 💳 Payments APIs (using Stripe or Razorpay)
+// 💳 Payments APIs (Stripe or Razorpay)
 export const createPaymentIntent = (paymentData) =>
   API.post('/payments/create-payment-intent', paymentData);
 

@@ -3,13 +3,21 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
-// ✅ Initialize Sequelize with DATABASE_URL from .env
+// ✅ Create a new Sequelize instance with DATABASE_URL from .env
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: 'postgres',  // Specifies PostgreSQL as DB dialect
-  logging: false,       // Disable SQL query logging in console
+  dialect: 'postgres',
+  logging: false, // set to console.log to enable SQL query logs
+
+  // ✅ Uncomment below for production (e.g. render, railway, heroku with SSL)
+  // dialectOptions: {
+  //   ssl: {
+  //     require: true,
+  //     rejectUnauthorized: false,
+  //   },
+  // },
 });
 
-// ✅ Test the database connection immediately when this file is imported
+// ✅ Immediately test the DB connection when imported
 (async () => {
   try {
     await sequelize.authenticate();
